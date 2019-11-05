@@ -1,8 +1,8 @@
 import serial
 from datetime import datetime
 import time
-import argparse #Module pour ajouter des paramètres lors de l appel du script 
-from influxdb import InfluxDBClient  #Module pour gérer l export des données vers la base InfluxDB
+import argparse #Module pour ajouter des paramÃ¨tres lors de l appel du script 
+from influxdb import InfluxDBClient  #Module pour gÃ©rer l export des donnÃ©es vers la base InfluxDB
 import os
 sensor='NextPM'
 
@@ -43,14 +43,14 @@ class NextPM:
         else: print("Attention: changer la moyenne dans fichier de config.ini")
         time.sleep(0.36)
         response = self.serial.read(15)
-        print("Reponse paramétrage: ",response)
+        print("Reponse paramÃ©trage: ",response)
         print("Parametrage nextPM: OK")
         time.sleep(1.1)
 
 
-#Fonction pour acquerir les donn�es moyenn�es    
+#Fonction pour acquerir les données moyennées    
     def moyenne(self,moyenne):
-        #Fonction pour lire les données du capteur
+        #Fonction pour lire les donnÃ©es du capteur
         if int(moyenne)  == 1: self.serial.write(b'\x81\x11\x6E') #1s
         if moyenne == 10: self.serial.write(b'\x81\x12\x6D') #10s
         if moyenne == 60: self.serial.write(b'\x81\x13\x6C') #60s
@@ -61,7 +61,7 @@ class NextPM:
             pm_1 = (sentence[9]+sentence[10])/10 #PM1 en microg par m3
             pm_25 = (sentence[11]+sentence[12])/10 #PM2.5 en microg par m3
             pm_10 = (sentence[13]+sentence[14])/10 #PM10 en microg par m3
-            line = "PM1: {} µg/m3, PM2.5: {} μg/m3, PM10: {} μg/m3".format(pm_1,pm_25, pm_10)
+            line = "PM1: {} Âµg/m3, PM2.5: {} Î¼g/m3, PM10: {} Î¼g/m3".format(pm_1,pm_25, pm_10)
             test_var = "{}; PM2.5; {} ; PM10; {}".format(datetime.now().strftime("%Y/%m/%d %H:%M:%S"),round(pm_25,3),round(pm_10,3))
             #print(test_var)
             #print(datetime.datetime.now().strftime("%d %b %Y %H:%M:%S : "),line)
@@ -74,7 +74,7 @@ class NextPM:
                     },test_var
             
         else:
-            print("Pas de données valides")
+            print("Pas de donnÃ©es valides")
             PM1 =''
             PM25 = ''
             PM10 = ''
@@ -89,7 +89,7 @@ class NextPM:
             
 ######################################################################################
 ######################################################################################
-#Fonction pour extraire le numéro du Raspberry pour envoyer avec les données
+#Fonction pour extraire le numÃ©ro du Raspberry pour envoyer avec les donnÃ©es
 def getSerial():
     with open('/proc/cpuinfo','r') as f:
         for line in f:
@@ -103,13 +103,13 @@ def getSerial():
 
 ######################################################################################
 ######################################################################################
-#Fonction pour integrer les donn�es dans notre base INFLUX DB
+#Fonction pour integrer les données dans notre base INFLUX DB
 infl = int(1)
 measurement = 'airquality_measurement'
 client = InfluxDBClient(host = 'dmz-aircasting',
                         port = '8086',
-                      username = 'root',
-                     password = 'root',
+                      username = '****',
+                     password = '****',
                     database = 'test')
 #Pour info format de base test : time;Id_rasp;PM10;PM2.5;capteur;port;sensor;site
 ######################################################################################    
