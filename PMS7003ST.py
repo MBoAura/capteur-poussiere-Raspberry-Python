@@ -136,8 +136,8 @@ infl = int(1)
 measurement = 'airquality_measurement'
 client = InfluxDBClient(host = 'dmz-aircasting',
                         port = '8086',
-                      username = 'root',
-                     password = 'root',
+                      username = '****',
+                     password = '****',
                     database = 'test')
 #format de base : time;Id_rasp;PM10;PM2.5;capteur;port;sensor;site
 
