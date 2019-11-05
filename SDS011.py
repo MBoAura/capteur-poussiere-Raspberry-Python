@@ -2,9 +2,9 @@ import serial
 from datetime import datetime
 import time
 import numpy as np
-import configparser  #Module pour gérer l import d un fichier de configuration
-import argparse #Module pour ajouter des paramètres lors de l appel du script 
-from influxdb import InfluxDBClient  #Module pour gérer l export des données vers la base InfluxDB
+import configparser  #Module pour gÃ©rer l import d un fichier de configuration
+import argparse #Module pour ajouter des paramÃ¨tres lors de l appel du script 
+from influxdb import InfluxDBClient  #Module pour gÃ©rer l export des donnÃ©es vers la base InfluxDB
 import os
 sensor='SDS011'
 
@@ -35,7 +35,7 @@ class SDS011:
 
 #Fonction pour acquerir les donnees     
     def acquisition(self):
-        "Acquisition donn�es PM2.5 et PM10 depuis un SDS011"
+        "Acquisition données PM2.5 et PM10 depuis un SDS011"
         capteur = serial.Serial(self.port)
         #print(capteur)
         byte = capteur.read()
@@ -44,7 +44,7 @@ class SDS011:
             sentence = capteur.read(size=9) # Read 8 more bytes
             PM25= (sentence[1]+sentence[2])/10
             PM10 = (sentence[3]+sentence[4])/10
-            line = "  PM 2.5: {} μg.m-3  PM 10: {} μg.m-3".format(PM25, PM10)
+            line = "  PM 2.5: {} Î¼g.m-3  PM 10: {} Î¼g.m-3".format(PM25, PM10)
             # ignoring the checksum and message tail
             print(datetime.now().strftime("%Y/%m/%d %H:%M:%S")+line)
             return {
@@ -55,7 +55,7 @@ class SDS011:
                     "PM10":PM10}
                     }
         else:
-            print("En attente de données valides ")
+            print("En attente de donnÃ©es valides ")
             return {"tags":{
                     "sensor": "SDS011"},
                 "fields":{
@@ -98,7 +98,7 @@ class SDS011:
 
 ######################################################################################
 ######################################################################################
-#Fonction pour extraire le numéro du Raspberry pour envoyer avec les données
+#Fonction pour extraire le numÃ©ro du Raspberry pour envoyer avec les donnÃ©es
 def getSerial():
     with open('/proc/cpuinfo','r') as f:
         for line in f:
@@ -117,8 +117,8 @@ infl = int(1)
 measurement = 'airquality_measurement'
 client = InfluxDBClient(host = 'dmz-aircasting',
                         port = '8086',
-                      username = 'root',
-                     password = 'root',
+                      username = '****',
+                     password = '****',
                     database = 'test')
 #Pour info format de base test : time;Id_rasp;PM10;PM2.5;capteur;port;sensor;site
 ######################################################################################  
